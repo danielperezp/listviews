@@ -60,8 +60,7 @@ class MyHomePage extends StatelessWidget {
         ],
 
       ),
-      body: new Container(
-        child: new Stack(
+      body: new Stack(
           children: <Widget>[Positioned(
             top: 0,
             left: 0,
@@ -76,7 +75,6 @@ class MyHomePage extends StatelessWidget {
               child:OurVListView())
               ],
         ),
-      ),
       bottomNavigationBar:
           FooterBar(), // This trailing comma makes auto-formatting nicer for build methods.
     );
