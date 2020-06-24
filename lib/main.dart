@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:retoListView/widgets/animal_desc.dart';
+import 'package:retoListView/widgets/body.dart';
+import 'package:retoListView/widgets/footer-bar.dart';
 
 import 'package:retoListView/widgets/listHView.dart';
 import 'package:retoListView/widgets/listVView.dart';
-import 'package:retoListView/widgets/our-app-bar.dart';
+import 'package:retoListView/widgets/places_desc.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,18 +27,24 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'ListViews'),
+      initialRoute: '/',
+      routes: {
+        MyHomePage.ROUTE_PATH: (context) => MyHomePage(title: 'ListViews'),
+        Places.ROUTE_PATH: (context) => Places()
+      },
+      // home: MyHomePage(title: 'ListViews'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  static const ROUTE_PATH = '/';
   final String title;
   const MyHomePage({
     Key key,
@@ -43,40 +52,51 @@ class MyHomePage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() {
+    return _Home(this.title);
+  }
+}
+
+class _Home extends State<MyHomePage>{
+  final String title;
+
+  _Home(this.title);
+
+  List<Widget> children = [
+    Body(),
+    AnimalDesc()
+  ];
+
+  int indexTap = 0;
+
+  onTapped(int value){
+    setState(() {
+      this.indexTap = value;
+    });
+  }
+
+  onPressed(){
+    Navigator.pushNamed(context, Places.ROUTE_PATH);
+  }
+ 
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(this.title),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.account_circle),onPressed: (){print('Go my friend.');},)
+          IconButton(
+            icon: Icon(Icons.arrow_forward_ios),
+            onPressed: this.onPressed,
+          )
         ],
-
       ),
-      body: new Stack(
-          children: <Widget>[Positioned(
-            top: 0,
-            left: 0,
-            height: 200,
-            width: MediaQuery.of(context).size.width,
-            child: OurHListView()), 
-            Positioned(
-              top: 200,
-              left: 0,
-              height: MediaQuery.of(context).size.height - 200,
-            width: 500,
-              child:OurVListView())
-              ],
-        ),
+      body: Center(child: this.children[this.indexTap],),
       bottomNavigationBar:
-          FooterBar(), // This trailing comma makes auto-formatting nicer for build methods.
+          FooterBar( indexTap: this.indexTap, onTapped: onTapped,), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
 }
