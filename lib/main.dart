@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:retoListView/widgets/animal_desc.dart';
+import 'package:retoListView/widgets/about.dart';
+import 'package:retoListView/widgets/app_bar.dart';
 import 'package:retoListView/widgets/body.dart';
 import 'package:retoListView/widgets/footer-bar.dart';
+import 'package:retoListView/widgets/our_description.dart';
 
-import 'package:retoListView/widgets/listHView.dart';
-import 'package:retoListView/widgets/listVView.dart';
 import 'package:retoListView/widgets/places_desc.dart';
 
 void main() {
@@ -36,7 +36,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         MyHomePage.ROUTE_PATH: (context) => MyHomePage(title: 'ListViews'),
-        Places.ROUTE_PATH: (context) => Places()
+        Places.ROUTE_PATH: (context) => Places(),
+        OurDescription.ROUTE_PATH: (context) => OurDescription(),
       },
       // home: MyHomePage(title: 'ListViews'),
     );
@@ -58,13 +59,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _Home extends State<MyHomePage>{
-  final String title;
 
+  final String title;
   _Home(this.title);
 
   List<Widget> children = [
     Body(),
-    AnimalDesc()
+    About()
   ];
 
   int indexTap = 0;
@@ -82,17 +83,7 @@ class _Home extends State<MyHomePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(this.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_forward_ios),
-            onPressed: this.onPressed,
-          )
-        ],
-      ),
+      appBar: MyAppBar(title: 'Nature', onPressed: onPressed),
       body: Center(child: this.children[this.indexTap],),
       bottomNavigationBar:
           FooterBar( indexTap: this.indexTap, onTapped: onTapped,), // This trailing comma makes auto-formatting nicer for build methods.

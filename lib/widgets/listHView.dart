@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:retoListView/widgets/data.dart';
+import 'package:retoListView/widgets/our_desc_args.dart';
+import 'package:retoListView/widgets/our_description.dart';
+import 'package:retoListView/widgets/our_image.dart';
 
 class OurHListView extends StatelessWidget {
+  final String title = 'Type.';
+
+  onTapped(BuildContext context, String path, String type, String description) {
+    print(path);
+    Navigator.pushNamed(context, OurDescription.ROUTE_PATH, arguments: 
+    OurScreenArguments(path, type, description));
+  }
+
   @override
   Widget build(BuildContext context) {
     double c_width = MediaQuery.of(context).size.width * 0.5;
@@ -26,15 +37,9 @@ class OurHListView extends StatelessWidget {
                     ]),
                 child: Row(
                   children: [
-                    Container(
-                      width: c_width,
-                      height: hHeigth,
-                      margin: EdgeInsets.only(right: 20.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          image: DecorationImage(
-                              image: AssetImage(item['path']),
-                              fit: BoxFit.cover)),
+                    GestureDetector(
+                      onTap: () => this.onTapped(context, item['path'], item['type'],item['description']),
+                      child:OurImage(heigth: hHeigth, width: c_width,path: item['path'],radius: 8.0,),
                     ),
                     Container(
                         width: c_width - 40,
@@ -43,13 +48,13 @@ class OurHListView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Fecha de Nacimiento',
+                              this.title,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),
-                            Text(item['date'])
+                            Text(item['type'])
                           ],
                         ))
                   ],
